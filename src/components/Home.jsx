@@ -5,6 +5,7 @@ const profileImg =
 export const Home = ({ lang }) => {
   const homeContent = {
     EN: {
+      name: "SUTTIPONG POLMAG",
       role: "Systems & Software Engineer",
       dev: "Developer",
       org: "Organization Management",
@@ -26,11 +27,12 @@ export const Home = ({ lang }) => {
       },
     },
     TH: {
+      name: "สุทธิพงษ์ ผลมาก",
       role: "วิศวกรระบบและซอฟต์แวร์",
       dev: "นักพัฒนาซอฟต์แวร์ (Developer)",
       org: "การบริหารจัดการองค์กร",
-      av: "วิศวกรระบบภาพและเสียง (Audio-Visual)",
-      tech: "ฝ่ายเทคนิคและระบบสนับสนุน",
+      av: "ระบบภาพและเสียง (Audio-Visual)",
+      tech: "อื่นๆ",
       skills: {
         dev: [
           "JavaScript",
@@ -45,18 +47,14 @@ export const Home = ({ lang }) => {
           "การบริหารจัดการงาน (Job pipeline)",
           "ขั้นตอนการปฏิบัติงานมาตรฐาน (SOP)",
           "ดัชนีชี้วัดผลงาน (KPI)",
-          "สะสาง สะดวก สะอาด สุขลักษณะ สร้างนิสัย (5S)",
+          "5ส",
         ],
         av: [
           "งานคอนเสิร์ต/ทัวร์ริ่ง (Touring)",
           "งานติดตั้งระบบถาวร (Installed)",
           "งานกิจกรรม/อีเวนต์ (Event)",
         ],
-        tech: [
-          "ระบบเครือข่าย (Network)",
-          "ระบบอินเทอร์เน็ตในทุกสิ่ง (IOT)",
-          "ระบบวิศวกรรมอาคาร (MEP)",
-        ],
+        tech: ["ระบบเครือข่าย", "IOT", "ระบบบ้าน-อาคาร (MEP)"],
       },
     },
   };
@@ -82,11 +80,11 @@ export const Home = ({ lang }) => {
           </div>
 
           <h1 className="text-2xl font-black tracking-wide bg-linear-to-r from-zinc-100 via-zinc-400 to-zinc-100 bg-clip-text text-transparent drop-shadow-md">
-            SUTTIPONG POLMAG
+            {current.name}
           </h1>
-          <p className="text-zinc-400 text-sm font-semibold tracking-widest mt-1 uppercase">
+          {/*<p className="text-zinc-400 text-sm font-semibold tracking-widest mt-1 uppercase">
             {current.role}
-          </p>
+          </p>*/}
           <div className="w-12 h-0.5 bg-zinc-500 my-4 shadow-sm" />
 
           {/* Industrial Contact Block */}

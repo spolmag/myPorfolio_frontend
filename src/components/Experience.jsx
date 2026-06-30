@@ -57,17 +57,17 @@ export const Experience = ({ lang }) => {
         {
           year: "2024 - ปัจจุบัน",
           company: "งานอิสระ",
-          role: "วิศวกรและนักพัฒนาอิสระ",
+          role: "ช่างเทคนิคและนักพัฒนาอิสระ",
           details: [
-            "นักพัฒนาซอฟต์แวร์อิสระ (Freelance DEV)",
-            "ช่างเทคนิคอิสระ (Freelance technician)",
-            "วิศวกรระบบภาพและเสียง (Audio-Visual)",
+            "นักพัฒนาซอฟต์แวร์ (Freelance DEV)",
+            "ช่างเทคนิค (Freelance technician)",
+            "ระบบภาพและเสียง (Audio-Visual)",
           ],
         },
         {
           year: "1992 - 2023",
           company: "บริษัท สยามดนตรียามาฮ่า จำกัด (Siam Music Yamaha)",
-          role: "ความก้าวหน้าทางสายอาชีพ",
+          role: "พนักงานประจำ",
           details: [
             "2018 - 2023: ผู้จัดการฝ่ายบริการหลังการขาย (After Sales & Services Manager)",
             "2000 - 2017: ผู้จัดการฝ่ายขายและการตลาด (Sales & Marketing Manager)",

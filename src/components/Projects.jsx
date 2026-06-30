@@ -19,14 +19,14 @@ export const Projects = ({ lang }) => {
           title: "Full-Stack E-Commerce Platform",
           description:
             "A responsive web application project featuring product browsing, state management, and modern UI flows.",
-          url: "https://vercel.app",
+          url: "https://group5-ecommerce-frontend-sprint2.vercel.app/",
           tags: ["React", "Tailwind CSS", "Vercel", "State Management"],
         },
         {
           title: "SPX Transport Logistics Hub",
           description:
             "Internal portal and operational workspace interface tracking logistics pipelines and transportation data workflows.",
-          url: "https://google.com",
+          url: "https://sites.google.com/view/spxtransport/home",
           tags: [
             "System Workspace",
             "Operations",
@@ -51,24 +51,24 @@ export const Projects = ({ lang }) => {
       ],
     },
     TH: {
-      title: "ผลงานและโปรเจกต์ที่โดดเด่น",
+      title: "ผลงานและโปรเจกต์",
       subtitle: "การพัฒนาซอฟต์แวร์ และโซลูชันระบบภาพและเสียง",
       softwareTitle: "โครงการพัฒนาเว็บแอปพลิเคชัน (Web Applications)",
-      avTitle: "วิศวกรรมระบบภาพและเสียง (Audio-Visual Systems)",
+      avTitle: "ระบบภาพและเสียง (Audio-Visual Systems)",
       btnLive: "เข้าชมหน้าแอปจริง",
       softwareProjects: [
         {
           title: "แพลตฟอร์มระบบอีคอมเมิร์ซ (E-Commerce)",
           description:
-            "เว็บแอปพลิเคชันรองรับการเลือกซื้อสินค้า จัดการสถานะตระกร้าสินค้า และโครงสร้าง UI หน้าบ้านที่ทันสมัย",
-          url: "https://vercel.app",
+            "เว็บแอปพลิเคชันรองรับการเลือกซื้อสินค้า จัดการสถานะตระกร้าสินค้า และโครงสร้าง Frontend/Backend",
+          url: "https://group5-ecommerce-frontend-sprint2.vercel.app/",
           tags: ["React", "Tailwind CSS", "Vercel", "State Management"],
         },
         {
           title: "ศูนย์ข้อมูลโลจิสติกส์ SPX Transport",
           description:
             "พอร์ทัลภายในและอินเตอร์เฟซพื้นที่ทำงานเพื่อติดตามสายงานโลจิสติกส์และเวิร์กโฟลว์ข้อมูลการขนส่ง",
-          url: "https://google.com",
+          url: "https://sites.google.com/view/spxtransport/home",
           tags: [
             "System Workspace",
             "Operations",
@@ -81,7 +81,7 @@ export const Projects = ({ lang }) => {
         {
           type: "video",
           source: penguinVideo,
-          title: "งานคอนเสิร์ต และ ทัวร์ริ่ง (Penguin Villa Live)",
+          title: "งานคอนเสิร์ต และ ทัวร์ริ่ง",
           tags: ["ระบบเสียงสด", "มอนิเตอร์เวที", "ระบบไฟและภาพแสงสีเสียง"],
         },
         {
