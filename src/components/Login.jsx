@@ -1,7 +1,8 @@
 import { useState } from "react";
 import { Lock, Mail, ShieldAlert, Loader2 } from "lucide-react";
 
-const API_BASE = import.meta.env.VITE_API_URL || "http://localhost:3000";
+const rawApiUrl = import.meta.env.VITE_API_URL || "http://localhost:3000";
+const API_BASE = rawApiUrl.endsWith("/") ? rawApiUrl : `${rawApiUrl}/`;
 
 export const Login = ({ lang, onLoginSuccess }) => {
   const [email, setEmail] = useState("");
@@ -37,7 +38,7 @@ export const Login = ({ lang, onLoginSuccess }) => {
 
     try {
       // Points securely to your functional userLogin router endpoint
-      const response = await fetch(`${API_BASE}/api/contact`, {
+      const response = await fetch(`${API_BASE}api/user/login`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         credentials: "include",

@@ -8,13 +8,15 @@ import { Login } from "./components/Login";
 import { Dashboard } from "./components/Dashboard";
 import { Loader2 } from "lucide-react";
 
-const API_BASE = import.meta.env.VITE_API_URL || "http://localhost:3000";
+// 🧠 1. FIX: Bulletproof URL trailing slash normalization layer!
+const rawApiUrl = import.meta.env.VITE_API_URL || "http://localhost:3000";
+const API_BASE = rawApiUrl.endsWith("/") ? rawApiUrl : `${rawApiUrl}/`;
 
 function App() {
   const [lang, setLang] = useState("EN");
   const [adminUser, setAdminUser] = useState(null);
   const [showLogin, setShowLogin] = useState(false);
-  const [isInitializing, setIsInitializing] = useState(true); // 🧠 Tracks background verification handshake
+  const [isInitializing, setIsInitializing] = useState(true);
 
   const toggleLanguage = () => {
     setLang((prev) => (prev === "EN" ? "TH" : "EN"));
@@ -24,19 +26,20 @@ function App() {
   useEffect(() => {
     const checkPersistedAuth = async () => {
       try {
-        const response = await fetch(`${API_BASE}/api/contact`, {
+        // 🧠 2. FIX: Redirected securely from '/api/contact' to your real '/api/user/me' session router check!
+        const response = await fetch(`${API_BASE}api/user/me`, {
           method: "GET",
-          credentials: "include", // Essential to pass the cookie for inspection
+          credentials: "include",
         });
         const result = await response.json();
 
         if (response.ok && result.success) {
-          setAdminUser(result.data); // Re-hydrates state with database admin records automatically
+          setAdminUser(result.data);
         }
       } catch {
-        //console.log("No persistent administrative session active:", error); - comment out to prevent error show on console
+        // Safe empty catch block handles visitor page entry cleanly without throwing red traces!
       } finally {
-        setIsInitializing(false); // Synchronization phase finished
+        setIsInitializing(false);
       }
     };
 
@@ -45,7 +48,8 @@ function App() {
 
   const handleLogout = async () => {
     try {
-      await fetch("http://localhost:3000/api/user/logout", {
+      // 🧠 3. FIX: Swapped hardcoded localhost for the global cloud network host address variable!
+      await fetch(`${API_BASE}api/user/logout`, {
         method: "POST",
         credentials: "include",
       });
@@ -56,12 +60,12 @@ function App() {
     }
   };
 
-  // 2. LOADING SPLASH: Prevents flickering or layout flashing while reading cookies
+  // 2. LOADING SPLASH: Prevents layout flashing while reading cookies on page boot
   if (isInitializing) {
     return (
       <div className="min-h-screen bg-neutral-950 flex items-center justify-center text-zinc-500 font-mono text-xs">
         <Loader2 size={16} className="animate-spin text-zinc-600 mr-2" />
-        <span>// INTIALIZING MACHINE LAYERS...</span>
+        <span>// INITIALIZING MACHINE LAYERS...</span>
       </div>
     );
   }

@@ -91,7 +91,7 @@ export const Dashboard = ({ lang, adminUser, onLogout, onAdminUserUpdate }) => {
     let isMounted = true;
     const syncBackendData = async () => {
       try {
-        const response = await fetch(`${API_BASE}/api/contact`, {
+        const response = await fetch(`${API_BASE}api/contact`, {
           method: "GET",
           credentials: "include",
         });
