@@ -72,6 +72,7 @@ export const Contact = ({ lang }) => {
         headers: {
           "Content-Type": "application/json",
         },
+        credentials: "include",
         body: JSON.stringify(payload),
       });
 
