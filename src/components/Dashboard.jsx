@@ -17,7 +17,8 @@ import {
   Save,
 } from "lucide-react";
 
-const API_BASE = import.meta.env.VITE_API_URL || "http://localhost:3000";
+const rawApiUrl = import.meta.env.VITE_API_URL || "http://localhost:3000";
+const API_BASE = rawApiUrl.endsWith("/") ? rawApiUrl : `${rawApiUrl}/`;
 
 export const Dashboard = ({ lang, adminUser, onLogout, onAdminUserUpdate }) => {
   const [contacts, setContacts] = useState([]);
@@ -49,7 +50,6 @@ export const Dashboard = ({ lang, adminUser, onLogout, onAdminUserUpdate }) => {
       tabAll: "All Logs",
       tabActive: "Open Tickets",
       tabClosed: "Archived",
-      // Settings translations
       settingsTitle: "Admin Settings",
       settingsSubtitle: "Modify operational profile records",
       lblUser: "Update Display Name",
@@ -74,7 +74,6 @@ export const Dashboard = ({ lang, adminUser, onLogout, onAdminUserUpdate }) => {
       tabAll: "ข้อความทั้งหมด",
       tabActive: "กำลังดำเนินการ",
       tabClosed: "ปิดงานแล้ว",
-      // Settings translations
       settingsTitle: "ตั้งค่าผู้ดูแลระบบ",
       settingsSubtitle: "แก้ไขข้อมูลโปรไฟล์การใช้งานระบบ",
       lblUser: "เปลี่ยนชื่อผู้ใช้งาน",
@@ -87,6 +86,7 @@ export const Dashboard = ({ lang, adminUser, onLogout, onAdminUserUpdate }) => {
 
   const current = content[lang];
 
+  // Sync message data collections on mount phase
   useEffect(() => {
     let isMounted = true;
     const syncBackendData = async () => {
@@ -111,9 +111,10 @@ export const Dashboard = ({ lang, adminUser, onLogout, onAdminUserUpdate }) => {
     };
   }, []);
 
+  // 🛠️ TOGGLE TICKET STATE (isClosed) via PUT
   const handleToggleStatus = async (id, currentStatus) => {
     try {
-      const response = await fetch(`http://localhost:3000/api/contact/${id}`, {
+      const response = await fetch(`${API_BASE}api/contact/${id}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         credentials: "include",
@@ -133,6 +134,7 @@ export const Dashboard = ({ lang, adminUser, onLogout, onAdminUserUpdate }) => {
     }
   };
 
+  // 🛠️ PURGE THE ENTIRE DOCUMENT FROM MONGODB VIA DELETE
   const handleDeleteMessage = async (id) => {
     if (
       !window.confirm(
@@ -141,7 +143,7 @@ export const Dashboard = ({ lang, adminUser, onLogout, onAdminUserUpdate }) => {
     )
       return;
     try {
-      const response = await fetch(`http://localhost:3000/api/contact/${id}`, {
+      const response = await fetch(`${API_BASE}api/contact/${id}`, {
         method: "DELETE",
         credentials: "include",
       });
@@ -155,21 +157,23 @@ export const Dashboard = ({ lang, adminUser, onLogout, onAdminUserUpdate }) => {
     }
   };
 
+  // 🧠 FIXED: Added the missing helper function loop to clear compile errors
+  const showNotification = (msg) => {
+    setFeedbackMsg(msg);
+    setTimeout(() => setFeedbackMsg(""), 3000);
+  };
+
   // 🛠️ 2. SUBMIT USERNAME UPDATE TO EXPRESS
   const handleUpdateProfile = async (e) => {
     e.preventDefault();
     setSettingsLoading(true);
     try {
-      const response = await fetch(
-        "http://localhost:3000/api/user/me/profile",
-        {
-          // Adjust endpoint URL if needed
-          method: "PUT",
-          headers: { "Content-Type": "application/json" },
-          credentials: "include",
-          body: JSON.stringify({ userName: newUserName }),
-        },
-      );
+      const response = await fetch(`${API_BASE}api/user/me/profile`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        credentials: "include",
+        body: JSON.stringify({ userName: newUserName }),
+      });
       const result = await response.json();
       if (response.ok && result.success) {
         showNotification(
@@ -193,15 +197,12 @@ export const Dashboard = ({ lang, adminUser, onLogout, onAdminUserUpdate }) => {
     e.preventDefault();
     setSettingsLoading(true);
     try {
-      const response = await fetch(
-        "http://localhost:3000/api/user/me/password",
-        {
-          method: "PUT",
-          headers: { "Content-Type": "application/json" },
-          credentials: "include",
-          body: JSON.stringify({ currentPassword, newPassword }),
-        },
-      );
+      const response = await fetch(`${API_BASE}api/user/me/password`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        credentials: "include",
+        body: JSON.stringify({ currentPassword, newPassword }),
+      });
       const result = await response.json();
       if (response.ok && result.success) {
         showNotification(
@@ -223,11 +224,7 @@ export const Dashboard = ({ lang, adminUser, onLogout, onAdminUserUpdate }) => {
     }
   };
 
-  const showNotification = (msg) => {
-    setFeedbackMsg(msg);
-    setTimeout(() => setFeedbackMsg(""), 3000);
-  };
-
+  // Dynamic formatting calculation tool tracking local Bangkok times offset
   const formatToThaiTime = (utcString) => {
     if (!utcString) return "";
     const dateObj = new Date(utcString);
@@ -245,6 +242,7 @@ export const Dashboard = ({ lang, adminUser, onLogout, onAdminUserUpdate }) => {
     return `${dateStr} - ${timeStr} น.`;
   };
 
+  // Client filtering evaluation loop arrays matrix
   const filteredContacts = contacts.filter((c) => {
     if (activeTab === "active") return c.isClosed === false;
     if (activeTab === "closed") return c.isClosed === true;
@@ -261,13 +259,14 @@ export const Dashboard = ({ lang, adminUser, onLogout, onAdminUserUpdate }) => {
               {current.title}
             </h2>
             <p className="text-zinc-500 font-mono text-xs tracking-wider mt-1 uppercase">
-              // Operator: {adminUser?.userName || "Admin"} (
-              {adminUser?.role || "authenticated"})
+              // Operator:{" "}
+              {adminUser?.userName === "Suttipong Polmag" && lang === "TH"
+                ? "สุทธิพงษ์ ผลมาก"
+                : adminUser?.userName || "Admin"}{" "}
+              ({adminUser?.role || "authenticated"})
             </p>
           </div>
-
           <div className="flex items-center space-x-3">
-            {/* 🛠️ SETTINGS GEAR BUTTON ACTION TOOLBAR BLOCK */}
             <button
               onClick={() => setIsSettingsOpen(true)}
               className="p-2 rounded-xl bg-zinc-900 border border-zinc-800 text-zinc-400 hover:text-white hover:border-zinc-600 transition-all cursor-pointer shadow-md flex items-center space-x-1.5 text-xs font-mono font-bold uppercase"
@@ -275,7 +274,6 @@ export const Dashboard = ({ lang, adminUser, onLogout, onAdminUserUpdate }) => {
               <Settings size={14} className="animate-spin-slow" />
               <span className="hidden sm:inline">SETTINGS</span>
             </button>
-
             <button
               onClick={onLogout}
               className="inline-flex items-center space-x-2 text-xs font-mono font-bold px-4 py-2 rounded-xl bg-rose-950/20 text-rose-400 border border-rose-900/40 hover:bg-rose-950/40 hover:text-rose-300 transition-all cursor-pointer shadow-md"
@@ -363,17 +361,14 @@ export const Dashboard = ({ lang, adminUser, onLogout, onAdminUserUpdate }) => {
                         </div>
                       )}
                     </td>
-
                     <td className="p-4 align-top">
                       <p className="text-zinc-300 leading-relaxed text-xs max-h-32 overflow-y-auto whitespace-pre-wrap bg-neutral-950/40 border border-zinc-900 p-3 rounded-xl font-sans">
                         {c.message}
                       </p>
                     </td>
-
                     <td className="p-4 align-top font-mono text-xs text-zinc-400 pt-5">
                       {formatToThaiTime(c.createdAt)}
                     </td>
-
                     <td className="p-4 align-top text-center space-y-3 pt-5">
                       <button
                         onClick={() => handleToggleStatus(c._id, c.isClosed)}
@@ -394,7 +389,6 @@ export const Dashboard = ({ lang, adminUser, onLogout, onAdminUserUpdate }) => {
                             : current.statusOpen}
                         </span>
                       </button>
-
                       <div className="flex items-center justify-center space-x-2">
                         <button
                           onClick={() => handleToggleStatus(c._id, c.isClosed)}
@@ -425,10 +419,11 @@ export const Dashboard = ({ lang, adminUser, onLogout, onAdminUserUpdate }) => {
           </div>
         )}
       </div>
-
       {/* 🛠️ SLIDE-OUT INDUSTRIAL SETTINGS SIDEBAR COMPONENT PANEL */}
       <div
-        className={`fixed top-0 right-0 h-full w-full sm:w-80 z-50 bg-neutral-950 border-l border-zinc-800 shadow-[0_0_50px_rgba(0,0,0,0.9)] transform transition-transform duration-300 ease-in-out backdrop-blur-md p-6 flex flex-col justify-between ${isSettingsOpen ? "translate-x-0" : "translate-x-full"}`}
+        className={`fixed top-0 right-0 h-full w-full sm:w-80 z-50 bg-neutral-950 border-l border-zinc-800 shadow-[0_0_50px_rgba(0,0,0,0.9)] transform transition-transform duration-300 ease-in-out backdrop-blur-md p-6 flex flex-col justify-between ${
+          isSettingsOpen ? "translate-x-0" : "translate-x-full"
+        }`}
       >
         <div>
           {/* Sidebar Top Header */}
@@ -448,7 +443,6 @@ export const Dashboard = ({ lang, adminUser, onLogout, onAdminUserUpdate }) => {
               <X size={16} />
             </button>
           </div>
-
           <div className="space-y-6">
             {/* Form Part A: Change Profile Name */}
             <form onSubmit={handleUpdateProfile} className="space-y-2">
@@ -498,7 +492,6 @@ export const Dashboard = ({ lang, adminUser, onLogout, onAdminUserUpdate }) => {
                   />
                 </div>
               </div>
-
               <div className="space-y-1">
                 <label className="text-[10px] font-mono tracking-wider text-zinc-400 block uppercase">
                   {current.lblNewPass}
@@ -517,7 +510,6 @@ export const Dashboard = ({ lang, adminUser, onLogout, onAdminUserUpdate }) => {
                   />
                 </div>
               </div>
-
               <button
                 type="submit"
                 disabled={settingsLoading}
@@ -529,7 +521,6 @@ export const Dashboard = ({ lang, adminUser, onLogout, onAdminUserUpdate }) => {
             </form>
           </div>
         </div>
-
         <div className="text-center text-[9px] font-mono text-zinc-600 uppercase pt-4">
           // SYSTEM_CORE_V1.0
         </div>
