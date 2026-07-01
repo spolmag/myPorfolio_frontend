@@ -83,6 +83,10 @@ export const Contact = ({ lang }) => {
         setSubmitStatus("success");
         // Reset form variables upon successful delivery
         setFormData({ name: "", email: "", tel: "", lineId: "", message: "" });
+
+        setTimeout(() => {
+          setSubmitStatus(null);
+        }, 4000); //Automatic close confirm send message at 4 seconds
       } else {
         setSubmitStatus("error");
         console.error("Server validation issue:", result.message);
