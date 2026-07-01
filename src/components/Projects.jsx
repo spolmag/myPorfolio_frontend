@@ -39,7 +39,7 @@ export const Projects = ({ lang }) => {
         {
           type: "video",
           source: penguinVideo,
-          title: "Touring / Concert Production (Penguin Villa)",
+          title: "Touring / Concert Production",
           tags: ["Live Sound", "FOH", "Stage Monitor", "Lighting & Visuals"],
         },
         {
