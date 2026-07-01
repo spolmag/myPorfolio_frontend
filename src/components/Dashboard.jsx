@@ -17,6 +17,8 @@ import {
   Save,
 } from "lucide-react";
 
+const API_BASE = import.meta.env.VITE_API_URL || "http://localhost:3000";
+
 export const Dashboard = ({ lang, adminUser, onLogout, onAdminUserUpdate }) => {
   const [contacts, setContacts] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -89,7 +91,7 @@ export const Dashboard = ({ lang, adminUser, onLogout, onAdminUserUpdate }) => {
     let isMounted = true;
     const syncBackendData = async () => {
       try {
-        const response = await fetch("http://localhost:3000/api/contact", {
+        const response = await fetch(`${API_BASE}/api/contact`, {
           method: "GET",
           credentials: "include",
         });

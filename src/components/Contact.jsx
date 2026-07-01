@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { Send, User, Mail, Phone, MessageSquare, Loader2 } from "lucide-react";
 
+const API_BASE = import.meta.env.VITE_API_URL || "http://localhost:3000";
+
 export const Contact = ({ lang }) => {
   const [formData, setFormData] = useState({
     name: "",
@@ -65,7 +67,7 @@ export const Contact = ({ lang }) => {
     };
 
     try {
-      const response = await fetch("http://localhost:3000/api/contact", {
+      const response = await fetch(`${API_BASE}/api/contact`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

@@ -8,6 +8,8 @@ import { Login } from "./components/Login";
 import { Dashboard } from "./components/Dashboard";
 import { Loader2 } from "lucide-react";
 
+const API_BASE = import.meta.env.VITE_API_URL || "http://localhost:3000";
+
 function App() {
   const [lang, setLang] = useState("EN");
   const [adminUser, setAdminUser] = useState(null);
@@ -22,7 +24,7 @@ function App() {
   useEffect(() => {
     const checkPersistedAuth = async () => {
       try {
-        const response = await fetch("http://localhost:3000/api/user/me", {
+        const response = await fetch(`${API_BASE}/api/contact`, {
           method: "GET",
           credentials: "include", // Essential to pass the cookie for inspection
         });
